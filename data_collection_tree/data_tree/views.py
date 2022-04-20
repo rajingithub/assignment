@@ -43,11 +43,14 @@ class DataQuery(APIView):
         for element in dim:
             if element['key']=='country':
                 country=element['val']
-            if element['key']=='device':
-                device=element['val']
+            # if element['key']=='device':
+            #     device=element['val']
         cur = connection.cursor()
-        cursor.execute("SELECT country,device,SUM(webreq)webreq,SUM(timespenttimespent) FROM DataTree WHERE country='%s';",country)
-        query_result = cursor.fetchall()
+        query="SELECT country,SUM(webreq)webreq,SUM(timespent)timespent FROM DataTree order by country WHERE country='%s';",country
+        cursor.execute(query)
+        data = cursor.fetchall()
+        return Response({"data": data,"status":HTTP_200_OK})
+        
         
         
         
